@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:solterra/core/router/app_router.dart';
 import 'package:solterra/core/theme/app_theme.dart';
+import 'package:solterra/features/landing/presentation/pages/landing_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,9 +11,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       theme: AppTheme.theme,
-      routerConfig: AppRouter.router(),
+     home: LandingPage(),
     );
   }
 }
