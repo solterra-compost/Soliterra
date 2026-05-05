@@ -4,6 +4,7 @@ import 'package:solterra/core/const/app_strings.dart';
 import 'package:solterra/core/responsive/responsive_extension.dart';
 import 'package:solterra/core/theme/app_colors.dart';
 import 'package:solterra/widgets/connect_with_us_button.dart';
+import 'package:solterra/widgets/lazy_image.dart';
 
 class HeroSection extends StatelessWidget {
   const HeroSection({super.key});
@@ -21,7 +22,7 @@ class HeroSection extends StatelessWidget {
             tablet: 380.0,
             desktop: 700.0,
           ),
-          child: Image.asset(AppStrings.imgThumbnel, fit: BoxFit.cover),
+          child: LazyImage(assetPath: AppStrings.imgThumbnel),
         ),
         Padding(
           padding: EdgeInsets.only(

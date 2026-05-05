@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:solterra/core/router/app_router.dart';
 import 'package:solterra/core/theme/app_theme.dart';
-import 'package:solterra/features/landing/presentation/pages/landing_page.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 
 void main() {
   runApp(const MyApp());
+  // usePathUrlStrategy();
 }
 
 class MyApp extends StatelessWidget {
@@ -11,9 +13,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       theme: AppTheme.theme,
-     home: LandingPage(),
+      routerConfig: AppRouter.router(),
     );
   }
 }

@@ -8,6 +8,6 @@ class AppStrings {
       "Regenerating the Earth with Nano-Biotechnology";
 
   // App Image String
-  static const String imgThumbnel = "assets/images/intro.jpeg";
+  static const String imgThumbnel = "assets/images/intro.jpg";
   static const String imgForm = "assets/images/image.png";
 }
