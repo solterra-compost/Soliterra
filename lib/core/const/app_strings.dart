@@ -1,11 +1,13 @@
 class AppStrings {
   //App name
-  static String appNameCap = "SOLTERRA";
-  static String appNameSml = "Solterra";
+  static const String appNameCap = "SOLTERRA";
+  static const String appNameSml = "Solterra";
 
   //App titles
-  static String appTitle = "Regenerating the Earth with Nano-Biotechnology";
+  static const String appTitle =
+      "Regenerating the Earth with Nano-Biotechnology";
 
   //App Image String
-  static String imgThumbnel = "assets/images/intro.png";
+  static const String imgThumbnel = "assets/images/intro.png";
+  static const String imgForm = "assets/images/image.png";
 }

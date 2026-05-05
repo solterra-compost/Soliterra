@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:solterra/features/landing/presentation/widgets/colaborate_section.dart';
+import 'package:solterra/features/landing/presentation/widgets/get_in_touch_section.dart';
 import 'package:solterra/features/landing/presentation/widgets/hero_section.dart';
 import 'package:solterra/features/landing/presentation/widgets/nav_bar.dart';
-
-import '../../../../core/const/app_strings.dart';
-import '../../../../core/responsive/responsive_extension.dart';
+import 'package:solterra/features/landing/presentation/widgets/premium_feature_section.dart';
+import 'package:solterra/features/landing/presentation/widgets/solution_section.dart';
+import 'package:solterra/features/landing/presentation/widgets/stats_section.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
 
+  // ✅ CORRECT — exactly this structure
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            SizedBox(
-              width: double.infinity,
-              height: context.responsive(
-                mobile: 240.0,
-                tablet: 380.0,
-                desktop: 500.0,
-              ),
-              child: Image.asset(AppStrings.imgThumbnel, fit: BoxFit.cover),
-            ),
-            Expanded(child: Column(children: [NavBar(), HeroSection()])),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: const [
+            NavBar(),
+            HeroSection(),
+            StatsSection(),
+            SolutionsSection(),
+            ColaborateSection(),
+            PremiumFeatureSection(),
+            GetInTouchSection(),
           ],
         ),
       ),

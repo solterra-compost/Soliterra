@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:solterra/core/responsive/responsive_extension.dart';
 import 'package:solterra/core/responsive/responsive_layout.dart';
 import 'package:solterra/core/theme/app_colors.dart';
@@ -8,12 +9,7 @@ class NavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ResponsiveLayout(
-        desktop: _NavBarDesktop(),
-        mobile: _NavBarMobile(),
-      ),
-    );
+    return ResponsiveLayout(desktop: _NavBarDesktop(), mobile: _NavBarMobile());
   }
 }
 
@@ -74,8 +70,12 @@ class _Logo extends StatelessWidget {
         const Icon(Icons.eco, color: Colors.green),
         const SizedBox(width: 6),
         Text(
-          'Solterra',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          'Solterra'.toUpperCase(),
+          style: GoogleFonts.manrope(
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
+            color: Colors.red,
+          ),
         ),
       ],
     );
