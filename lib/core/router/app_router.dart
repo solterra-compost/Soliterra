@@ -3,9 +3,9 @@ import 'package:solterra/features/landing/presentation/pages/landing_page.dart';
 
 class AppRouter {
   static GoRouter router() => GoRouter(
-    initialLocation: '/dashboard',
+    initialLocation: '/',
     routes: [
-      GoRoute(path: '/dashboard', builder: (context, state) => LandingPage()),
+      GoRoute(path: '/', builder: (context, state) => LandingPage()),
     ],
   );
 }
