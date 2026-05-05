@@ -10,7 +10,6 @@ import 'package:solterra/features/landing/presentation/widgets/stats_section.dar
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
 
-  // ✅ CORRECT — exactly this structure
   @override
   Widget build(BuildContext context) {
     return Scaffold(
