@@ -4,7 +4,6 @@ import 'package:solterra/core/const/app_strings.dart';
 import 'package:solterra/core/responsive/responsive_extension.dart';
 import 'package:solterra/core/theme/app_colors.dart';
 import 'package:solterra/widgets/connect_with_us_button.dart';
-import 'package:solterra/widgets/lazy_image.dart';
 
 class ColaborateSection extends StatelessWidget {
   const ColaborateSection({super.key});
@@ -25,7 +24,7 @@ class ColaborateSection extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-            LazyImage(assetPath: AppStrings.imgThumbnel),
+              Image.asset(AppStrings.imgThumbnel, fit: BoxFit.cover),
 
               // optional dark overlay for readability
               Container(color: Colors.black.withOpacity(.28)),

@@ -4,7 +4,6 @@ import 'package:solterra/core/const/app_strings.dart';
 import 'package:solterra/core/responsive/responsive_extension.dart';
 import 'package:solterra/core/theme/app_colors.dart';
 import 'package:solterra/widgets/helper_description.dart';
-import 'package:solterra/widgets/lazy_image.dart';
 
 class PremiumFeatureSection extends StatelessWidget {
   const PremiumFeatureSection({super.key});
@@ -125,7 +124,7 @@ class _FeatureCard extends StatelessWidget {
           child: SizedBox(
             width: double.infinity,
             height: imageHeight,
-            child: LazyImage(assetPath: AppStrings.imgThumbnel),
+            child: Image.asset(AppStrings.imgThumbnel, fit: BoxFit.cover),
           ),
         ),
         const SizedBox(height: 18),
