@@ -24,13 +24,24 @@ class StatsSection extends StatelessWidget {
           horizontal: BorderSide(color: Colors.grey.shade200),
         ),
       ),
-      child: Row(
-        // ✅ Always a Row — only font size and spacing change
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: _stats
-            .map((s) => _StatItem(value: s.$1, label: s.$2))
-            .toList(),
-      ),
+      child: context.isMobile
+          ? GridView.count(
+              crossAxisCount: 2,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 20,
+              childAspectRatio: 2.2,
+              children: _stats
+                  .map((s) => _StatItem(value: s.$1, label: s.$2))
+                  .toList(),
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: _stats
+                  .map((s) => _StatItem(value: s.$1, label: s.$2))
+                  .toList(),
+            ),
     );
   }
 }
@@ -49,18 +60,19 @@ class _StatItem extends StatelessWidget {
           value,
           style: GoogleFonts.manrope(
             fontSize: context.responsive(
-              mobile: 18.0,
+              mobile: 22.0,
               tablet: 24.0,
               desktop: 32.0,
             ),
             fontWeight: FontWeight.bold,
           ),
         ),
+        const SizedBox(height: 4),
         Text(
           label,
           style: GoogleFonts.manrope(
             fontSize: context.responsive(
-              mobile: 10.0,
+              mobile: 11.0,
               tablet: 12.0,
               desktop: 14.0,
             ),
