@@ -22,12 +22,14 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.41.9'
-          channel: 'stable'
-          cache: true
+      - name: Setup Flutter Manually
+        run: |
+          git clone https://github.com/flutter/flutter.git \
+            -b stable --depth 1 $HOME/flutter
+          echo "$HOME/flutter/bin" >> $GITHUB_PATH
+
+      - name: Verify Flutter Version
+        run: flutter --version
 
       - name: Disable Analytics
         run: flutter config --no-analytics
