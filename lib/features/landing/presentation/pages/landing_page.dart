@@ -20,7 +20,7 @@ class LandingPage extends StatelessWidget {
           children: const [
             NavBar(),
             HeroSection(),
-            StatsSection(),
+            // StatsSection(),
             SolutionsSection(),
             ColaborateSection(),
             PremiumFeatureSection(),
