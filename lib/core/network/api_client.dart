@@ -109,11 +109,13 @@ class ApiClient {
   }) async {
     try {
       final url = Uri.https(baseUrl, path);
-      final response = await _client.patch(
-        url,
-        headers: _buildHeaders(requiresAuth: requiresAuth),
-        body: body != null ? jsonEncode(body) : null,
-      );
+      final response = await _client
+          .patch(
+            url,
+            headers: _buildHeaders(requiresAuth: requiresAuth),
+            body: body != null ? jsonEncode(body) : null,
+          )
+          .timeout(Duration(seconds: 15));
       return _handleStatus(response);
     } on SocketException {
       throw const NetworkException();
@@ -128,10 +130,9 @@ class ApiClient {
   }) async {
     try {
       final url = Uri.https(baseUrl, path);
-      final response = await _client.delete(
-        url,
-        headers: _buildHeaders(requiresAuth: requiresAuth),
-      );
+      final response = await _client
+          .delete(url, headers: _buildHeaders(requiresAuth: requiresAuth))
+          .timeout(Duration(seconds: 15));
       return _handleStatus(response);
     } on SocketException {
       throw const NetworkException();
@@ -150,7 +151,8 @@ class ApiClient {
       final response = await _client
           .get(url, headers: _buildHeaders(requiresAuth: requiresAuth))
           .timeout(Duration(seconds: 15));
-      if (response.statusCode == 400) throw const UnauthorizedException();
+      if (response.statusCode == 400) throw const BadRequestException();
+      if (response.statusCode == 401) throw const UnauthorizedException();
       if (response.statusCode == 404) throw const NotFoundException();
       if (response.statusCode == 500) throw const ServerException();
       if (response.statusCode == 200) {

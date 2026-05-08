@@ -1,7 +1,7 @@
 class Breakpoints {
-  static double mobile = 600;
-  static double tablet = 1024;
-  static double desktop = 1440;
+  static const double mobile = 600;
+  static const double tablet = 1024;
+  static const double desktop = 1440;
 }
 
 enum DeviceType { mobile, tablet, desktop }

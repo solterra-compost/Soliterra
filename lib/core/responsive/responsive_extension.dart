@@ -1,5 +1,3 @@
-// core/responsive/responsive_extensions.dart
-
 import 'package:flutter/material.dart';
 import 'package:solterra/core/responsive/breakpoints.dart';
 
@@ -20,7 +18,7 @@ extension ResponsiveContext on BuildContext {
     if (isTablet) return tablet ?? desktop;
     return mobile;
   }
- 
+
   // — device type enum —
   // DeviceType get deviceType {
   //   if (isDesktop) return DeviceType.desktop;
