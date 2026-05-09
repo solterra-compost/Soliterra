@@ -8,58 +8,27 @@ import 'package:solterra/widgets/helper_description.dart';
 class SolutionsSection extends StatelessWidget {
   const SolutionsSection({super.key});
 
-  static final _cards = [
-    (
-      number: '03',
-      title: 'Technology Irrigation',
-      image: AppStrings.imgThumbnel,
-    ),
-    (number: '02', title: 'Organic Fertilizer', image: AppStrings.imgThumbnel),
-    (
-      number: '03',
-      title: 'Technology Irrigation',
-      image: AppStrings.imgThumbnel,
-    ),
-    (
-      number: '04',
-      title: 'Agricultural Monitoring',
-      image: AppStrings.imgThumbnel,
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: context.horizontalPadding,
-        vertical: context.responsive(mobile: 32.0, desktop: 60.0),
+        vertical: context.responsive(mobile: 32.0, tablet: 48.0, desktop: 60.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ─ Header row ─────────────────────────────────────
-          HelperDescription(),
+          const HelperDescription(),
+          const SizedBox(height: 32),
 
-          // ─ Cards grid ─────────────────────────────────────
+          // Mobile  (< 600): stacked layout
+          // Tablet  (600 - 1023): image left + title/description right,
+          //                      key points below
+          // Desktop (>= 1024): image left + full content right
           ResponsiveLayout(
-            // Desktop: staggered 4-column grid
-            desktop: _StaggeredGrid(cards: _cards),
-            // Mobile: vertical scroll list
-            mobile: Column(
-              children: _cards
-                  .map(
-                    (c) => Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: _SolutionCard(
-                        number: c.number,
-                        title: c.title,
-                        image: c.image,
-                        tall: false,
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
+            mobile: const _MobileWormFertilizerSection(),
+            tablet: const _TabletWormFertilizerSection(),
+            desktop: const _DesktopWormFertilizerSection(),
           ),
         ],
       ),
@@ -67,58 +36,158 @@ class SolutionsSection extends StatelessWidget {
   }
 }
 
-// ─── Staggered Grid (desktop) ────────────────────────────────
-class _StaggeredGrid extends StatelessWidget {
-  final List<({String number, String title, String image})> cards;
-  const _StaggeredGrid({required this.cards});
+// ─────────────────────────────────────────────────────────────
+// Mobile Layout
+// ─────────────────────────────────────────────────────────────
+class _MobileWormFertilizerSection extends StatelessWidget {
+  const _MobileWormFertilizerSection();
 
   @override
   Widget build(BuildContext context) {
-    // Replicates the design's stagger effect:
-    // card 0 & 2 are tall (left/right)
-    // card 1 & 3 are shorter, offset downward
-    return Row(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: _SolutionCard(
-            number: cards[0].number,
-            title: cards[0].title,
-            image: cards[0].image,
-            tall: true,
+        _ImageCard(
+          child: AspectRatio(
+            aspectRatio: 16 / 10,
+            child: Image.asset(AppStrings.imgThumbnel, fit: BoxFit.cover),
           ),
         ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 60), // ← creates the stagger
-            child: _SolutionCard(
-              number: cards[1].number,
-              title: cards[1].title,
-              image: cards[1].image,
-              tall: true,
+        const SizedBox(height: 18),
+        const _TitleAndDescription(),
+        const SizedBox(height: 18),
+        const _KeyPoints(),
+      ],
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Tablet Layout
+// ─────────────────────────────────────────────────────────────
+class _TabletWormFertilizerSection extends StatelessWidget {
+  const _TabletWormFertilizerSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Image height matches title + description height.
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: const [
+              Expanded(flex: 5, child: _ResponsiveImage()),
+              SizedBox(width: 32),
+              Expanded(flex: 6, child: _TitleAndDescription()),
+            ],
+          ),
+        ),
+        const SizedBox(height: 32),
+        const _KeyPoints(),
+      ],
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Desktop Layout
+// ─────────────────────────────────────────────────────────────
+class _DesktopWormFertilizerSection extends StatelessWidget {
+  const _DesktopWormFertilizerSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: const [
+          Expanded(flex: 5, child: _ResponsiveImage()),
+          SizedBox(width: 40),
+          Expanded(flex: 6, child: _DesktopContent()),
+        ],
+      ),
+    );
+  }
+}
+
+class _DesktopContent extends StatelessWidget {
+  const _DesktopContent();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [_TitleAndDescription(), SizedBox(height: 24), _KeyPoints()],
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Shared Widgets
+// ─────────────────────────────────────────────────────────────
+class _ResponsiveImage extends StatelessWidget {
+  const _ResponsiveImage();
+
+  @override
+  Widget build(BuildContext context) {
+    return _ImageCard(
+      child: Image.asset(
+        AppStrings.imgThumbnel,
+        fit: BoxFit.cover,
+        width: double.infinity,
+      ),
+    );
+  }
+}
+
+class _ImageCard extends StatelessWidget {
+  final Widget child;
+
+  const _ImageCard({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(borderRadius: BorderRadius.circular(16), child: child);
+  }
+}
+
+class _TitleAndDescription extends StatelessWidget {
+  const _TitleAndDescription();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          'Premium Vermicompost Fertilizer',
+          style: GoogleFonts.manrope(
+            fontSize: context.responsive(
+              mobile: 24.0,
+              tablet: 30.0,
+              desktop: 36.0,
             ),
+            fontWeight: FontWeight.w700,
+            height: 1.2,
           ),
         ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _SolutionCard(
-            number: cards[2].number,
-            title: cards[2].title,
-            image: cards[2].image,
-            tall: true,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 60), // ← mirrors stagger
-            child: _SolutionCard(
-              number: cards[3].number,
-              title: cards[3].title,
-              image: cards[3].image,
-              tall: true,
+        const SizedBox(height: 16),
+        Text(
+          'Our worm-based organic fertilizer (vermicompost) is produced '
+          'using earthworms that naturally convert organic waste into a '
+          'nutrient-rich compost. It improves soil fertility, increases '
+          'water retention, and promotes healthy root development.',
+          style: GoogleFonts.manrope(
+            fontSize: context.responsive(
+              mobile: 14.0,
+              tablet: 15.0,
+              desktop: 16.0,
             ),
+            height: 1.8,
+            color: Colors.black87,
           ),
         ),
       ],
@@ -126,58 +195,78 @@ class _StaggeredGrid extends StatelessWidget {
   }
 }
 
-// ─── Solution Card ───────────────────────────────────────────
-class _SolutionCard extends StatelessWidget {
-  final String number;
-  final String title;
-  final String image;
-  final bool tall;
-  const _SolutionCard({
-    required this.number,
-    required this.title,
-    required this.image,
-    required this.tall,
-  });
+class _KeyPoints extends StatelessWidget {
+  const _KeyPoints();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return const Column(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: SizedBox(
-            width: double.infinity,
-            height: tall ? 300 : 200,
-            child: Image.asset(image, fit: BoxFit.cover),
-          ),
+        _FeatureItem(
+          title: '100% Organic',
+          description: 'Free from harmful chemicals and safe for all crops.',
         ),
-        const SizedBox(height: 10),
-        Row(
-          children: [
-            Text(
-              number,
-              style: GoogleFonts.manrope(fontSize: 12, color: Colors.grey),
-            ),
-            const SizedBox(width: 8),
-
-            Expanded(
-              child: Text(
-                title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                softWrap: false,
-                textAlign: TextAlign.start,
-                style: GoogleFonts.manrope(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                  height: 1.4,
-                ),
-              ),
-            ),
-          ],
+        _FeatureItem(
+          title: 'Improves Soil Health',
+          description:
+              'Enhances soil structure and beneficial microbial activity.',
+        ),
+        _FeatureItem(
+          title: 'Boosts Plant Growth',
+          description:
+              'Provides essential nutrients for stronger roots and better yield.',
+        ),
+        _FeatureItem(
+          title: 'Eco-Friendly',
+          description: 'Converts biodegradable waste into valuable fertilizer.',
         ),
       ],
+    );
+  }
+}
+
+class _FeatureItem extends StatelessWidget {
+  final String title;
+  final String description;
+
+  const _FeatureItem({required this.title, required this.description});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(top: 4),
+            child: Icon(Icons.check_circle, size: 18, color: Colors.green),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: RichText(
+              text: TextSpan(
+                style: GoogleFonts.manrope(
+                  fontSize: context.responsive(
+                    mobile: 14.0,
+                    tablet: 14.5,
+                    desktop: 15.0,
+                  ),
+                  height: 1.7,
+                  color: Colors.black87,
+                ),
+                children: [
+                  TextSpan(
+                    text: '$title: ',
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  TextSpan(text: description),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
