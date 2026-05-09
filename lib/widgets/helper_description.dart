@@ -4,7 +4,9 @@ import 'package:solterra/core/responsive/responsive_layout.dart';
 import 'package:solterra/core/theme/app_colors.dart';
 
 class HelperDescription extends StatelessWidget {
-  const HelperDescription({super.key});
+  String label;
+  String text;
+  HelperDescription({required this.label, required this.text, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,18 +29,18 @@ class HelperDescription extends StatelessWidget {
             desktop: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(flex: 1, child: _SectionHeading()),
+                Expanded(flex: 1, child: _SectionHeading(label: label)),
                 const SizedBox(width: 40),
-                Expanded(flex: 1, child: _SectionDescription()),
+                Expanded(flex: 1, child: _SectionDescription(text: text)),
               ],
             ),
             // Mobile: stacked (Column)
             mobile: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _SectionHeading(),
+                _SectionHeading(label: label),
                 const SizedBox(height: 16),
-                _SectionDescription(),
+                _SectionDescription(text: text),
               ],
             ),
           ),
@@ -50,10 +52,12 @@ class HelperDescription extends StatelessWidget {
 } // ─── Helpers ─────────────────────────────────────────────────
 
 class _SectionHeading extends StatelessWidget {
+  String label;
+  _SectionHeading({required this.label});
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Next-Gen Solutions For\nOptimal Crop Growth',
+      label,
       style: TextStyle(
         fontSize: context.responsive(mobile: 22.0, tablet: 28.0, desktop: 36.0),
         fontWeight: FontWeight.bold,
@@ -64,11 +68,12 @@ class _SectionHeading extends StatelessWidget {
 }
 
 class _SectionDescription extends StatelessWidget {
+  String text;
+  _SectionDescription({required this.text});
   @override
   Widget build(BuildContext context) {
     return Text(
-      'We provide cutting-edge services to help farmers maximize crop yields. '
-      'Our precision farming, crop monitoring, and automation solutions aim to revolutionize agriculture.',
+      text,
       style: TextStyle(
         fontSize: context.responsive(mobile: 13.0, desktop: 15.0),
         color: Colors.grey.shade500,

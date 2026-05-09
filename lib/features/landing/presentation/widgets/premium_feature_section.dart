@@ -18,7 +18,11 @@ class PremiumFeatureSection extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          HelperDescription(),
+          HelperDescription(
+            label: 'Our Vision',
+            text:
+                "We believe in sustainable farming and strive to reduce chemical dependency in agriculture. Our premium vermicompost is designed to nurture soil with organic carbon, ensuring long-term benefits for both farmers and the environment. \nJoin us in our mission to bring back organic farming and create a healthier future for our soil and food.",
+          ),
           context.isMobile
               ? const _MobileFeatureLayout()
               : const _DesktopFeatureLayout(),

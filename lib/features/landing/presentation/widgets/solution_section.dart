@@ -18,13 +18,12 @@ class SolutionsSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const HelperDescription(),
+          HelperDescription(
+            label: 'Our Vision',
+            text:
+                "We believe in sustainable farming and strive to reduce chemical dependency in agriculture. Our premium vermicompost is designed to nurture soil with organic carbon, ensuring long-term benefits for both farmers and the environment. \nJoin us in our mission to bring back organic farming and create a healthier future for our soil and food.",
+          ),
           const SizedBox(height: 32),
-
-          // Mobile  (< 600): stacked layout
-          // Tablet  (600 - 1023): image left + title/description right,
-          //                      key points below
-          // Desktop (>= 1024): image left + full content right
           ResponsiveLayout(
             mobile: const _MobileWormFertilizerSection(),
             tablet: const _TabletWormFertilizerSection(),
