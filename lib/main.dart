@@ -7,9 +7,10 @@ import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await Supabase.initialize(url: Env.baseUrl, anonKey: Env.anonKey);
+  runApp(const MyApp());
   // usePathUrlStrategy();
 }
 
