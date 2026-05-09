@@ -80,7 +80,7 @@ class ColaborateSection extends StatelessWidget {
 
                         ConnectWithUsButton(
                           bgColor: AppColors.scaffoldBackgroundColor,
-                          fgColor: AppColors.black,
+                          fgColor: AppColors.black,onTap: (){},
                         ),
                       ],
                     ),

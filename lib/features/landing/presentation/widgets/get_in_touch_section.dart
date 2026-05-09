@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:solterra/core/responsive/responsive_extension.dart';
+import 'package:solterra/core/responsive/responsive_layout.dart';
 import 'package:solterra/core/theme/app_colors.dart';
+import 'package:solterra/widgets/connect_with_us_button.dart';
+import 'package:solterra/widgets/social_launcher.dart';
 
 class GetInTouchSection extends StatelessWidget {
   const GetInTouchSection({super.key});
@@ -14,34 +17,37 @@ class GetInTouchSection extends StatelessWidget {
       color: const Color(0xfff5f5f3),
       padding: EdgeInsets.symmetric(
         horizontal: context.horizontalPadding,
-        vertical: context.responsive(mobile: 40, tablet: 60, desktop: 70),
+        vertical: context.responsive(mobile: 48, tablet: 64, desktop: 80),
       ),
       child: Column(
         children: [
-          context.isMobile
-              ? const _MobileTopSection()
-              : context.isTablet
-              ? const _TabletTopSection()
-              : const _DesktopTopSection(),
-
-          SizedBox(
-            height: context.responsive(mobile: 32, tablet: 40, desktop: 50),
+          ResponsiveLayout(
+            mobile: const _MobileTopSection(),
+            tablet: const _TabletTopSection(),
+            desktop: const _DesktopTopSection(),
           ),
 
-          Divider(color: Colors.black54, thickness: .8),
+          SizedBox(
+            height: context.responsive(mobile: 36, tablet: 44, desktop: 56),
+          ),
 
-          SizedBox(height: context.responsive(mobile: 20, desktop: 26)),
+          const Divider(color: Colors.black12, thickness: 1),
 
-          context.isMobile
-              ? const _MobileBottomSection()
-              : context.isTablet
-              ? const _TabletBottomSection()
-              : const _DesktopBottomSection(),
+          SizedBox(
+              height: context.responsive(mobile: 20, tablet: 22, desktop: 24)),
+
+          ResponsiveLayout(
+            mobile: const _MobileBottomSection(),
+            tablet: const _TabletBottomSection(),
+            desktop: const _DesktopBottomSection(),
+          ),
         ],
       ),
     );
   }
 }
+
+// ── Layout shells ─────────────────────────────────────────────────────────────
 
 class _DesktopTopSection extends StatelessWidget {
   const _DesktopTopSection();
@@ -51,10 +57,10 @@ class _DesktopTopSection extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: const [
-        Expanded(flex: 4, child: _LeftNewsletterArea()),
-        SizedBox(width: 70),
+        Expanded(flex: 5, child: _LeftArea()),
+        SizedBox(width: 80),
         Expanded(flex: 2, child: _AddressArea()),
-        SizedBox(width: 50),
+        SizedBox(width: 56),
         Expanded(flex: 2, child: _ContactArea()),
       ],
     );
@@ -69,10 +75,8 @@ class _TabletTopSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const _LeftNewsletterArea(),
-
-        const SizedBox(height: 42),
-
+        const _LeftArea(),
+        const SizedBox(height: 48),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
@@ -86,86 +90,137 @@ class _TabletTopSection extends StatelessWidget {
   }
 }
 
-class _TabletBottomSection extends StatelessWidget {
-  const _TabletBottomSection();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _BodyText("© Copyright 2025, All Rights Reserved"),
-
-        Wrap(
-          spacing: 22,
-          runSpacing: 10,
-          children: const [
-            _BodyText("FAQ"),
-            _BodyText("Term of Service"),
-            _BodyText("Privacy Policy"),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
 class _MobileTopSection extends StatelessWidget {
   const _MobileTopSection();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const _LeftNewsletterArea(),
-        const SizedBox(height: 30),
-        const _AddressArea(),
-        const SizedBox(height: 24),
-        const _ContactArea(),
+        _LeftArea(),
+        SizedBox(height: 36),
+        _AddressArea(),
+        SizedBox(height: 28),
+        _ContactArea(),
       ],
     );
   }
 }
 
-class _LeftNewsletterArea extends StatelessWidget {
-  const _LeftNewsletterArea();
+// ── Left area ─────────────────────────────────────────────────────────────────
+
+class _LeftArea extends StatelessWidget {
+  const _LeftArea();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // — Eyebrow label —
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+          decoration: BoxDecoration(
+            color: const Color(0xff2d2d2b).withOpacity(0.07),
+            borderRadius: BorderRadius.circular(99),
+          ),
+          child: Text(
+            "CONTACT US",
+            style: GoogleFonts.manrope(
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1.4,
+              color: const Color(0xff4a5568),
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 16),
+
+        // — Heading —
         Text(
           "Get In Touch!",
           style: GoogleFonts.manrope(
-            fontSize: context.responsive(mobile: 34, tablet: 50, desktop: 62),
-            fontWeight: FontWeight.w700,
+            fontSize:
+                context.responsive(mobile: 36, tablet: 48, desktop: 58),
+            fontWeight: FontWeight.w800,
             color: AppColors.black,
+            height: 1.1,
           ),
         ),
-        const SizedBox(height: 10),
+
+        const SizedBox(height: 12),
+
         Text(
-          "have questions or need assistance?\nWe’re here to help!",
+          "Have questions about our vermicompost products?\nWe'd love to hear from you.",
           style: GoogleFonts.manrope(
-            fontSize: context.responsive(mobile: 15, desktop: 17),
-            height: 1.5,
-            color: Colors.black87,
+            fontSize: context.responsive(mobile: 14, desktop: 16),
+            height: 1.65,
+            color: Colors.black54,
           ),
         ),
-        SizedBox(height: context.responsive(mobile: 24, desktop: 40)),
+
+        SizedBox(
+            height: context.responsive(mobile: 28, desktop: 36)),
+
+        // — Subscribe strip —
         SizedBox(
           width: context.responsive(
             mobile: double.infinity,
-            tablet: 500,
-            desktop: 520,
+            tablet: 480,
+            desktop: 500,
           ),
           child: const _SubscribeField(),
+        ),
+
+        SizedBox(
+            height: context.responsive(mobile: 32, desktop: 44)),
+
+        // — Divider between subscribe and form —
+        SizedBox(
+          width: context.responsive(
+            mobile: double.infinity,
+            tablet: 480,
+            desktop: 500,
+          ),
+          child: Row(
+            children: [
+              const Expanded(child: Divider(color: Colors.black12)),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Text(
+                  "or send us a message",
+                  style: GoogleFonts.manrope(
+                    fontSize: 12,
+                    color: Colors.black38,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              const Expanded(child: Divider(color: Colors.black12)),
+            ],
+          ),
+        ),
+
+        SizedBox(
+            height: context.responsive(mobile: 28, desktop: 36)),
+
+        // — Contact form —
+        SizedBox(
+          width: context.responsive(
+            mobile: double.infinity,
+            tablet: 480,
+            desktop: 500,
+          ),
+          child: const _ContactForm(),
         ),
       ],
     );
   }
 }
+
+// ── Subscribe field ───────────────────────────────────────────────────────────
 
 class _SubscribeField extends StatelessWidget {
   const _SubscribeField();
@@ -173,34 +228,35 @@ class _SubscribeField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 62,
+      height: 58,
       decoration: BoxDecoration(
-        color: const Color(0xffebebea),
-        borderRadius: BorderRadius.circular(40),
+        color: const Color(0xffe8e8e6),
+        borderRadius: BorderRadius.circular(99),
       ),
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(6),
       child: Row(
         children: [
           const SizedBox(width: 18),
           Expanded(
             child: Text(
-              "Enter your email",
-              style: GoogleFonts.manrope(fontSize: 16, color: Colors.black54),
+              "Enter your email address",
+              style: GoogleFonts.manrope(
+                  fontSize: 14, color: Colors.black38),
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 28),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             decoration: BoxDecoration(
               color: AppColors.black,
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(99),
             ),
-            alignment: Alignment.center,
             child: Text(
               "Subscribe",
               style: GoogleFonts.manrope(
                 color: Colors.white,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
               ),
             ),
           ),
@@ -210,6 +266,231 @@ class _SubscribeField extends StatelessWidget {
   }
 }
 
+// ── Contact form ──────────────────────────────────────────────────────────────
+
+class _ContactForm extends StatefulWidget {
+  const _ContactForm();
+
+  @override
+  State<_ContactForm> createState() => _ContactFormState();
+}
+
+class _ContactFormState extends State<_ContactForm> {
+  final _nameCtrl = TextEditingController();
+  final _contactCtrl = TextEditingController();
+  final _messageCtrl = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameCtrl.dispose();
+    _contactCtrl.dispose();
+    _messageCtrl.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
+    if (_nameCtrl.text.trim().isEmpty ||
+        _contactCtrl.text.trim().isEmpty ||
+        _messageCtrl.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Please fill in all fields.',
+            style: GoogleFonts.manrope(),
+          ),
+          backgroundColor: AppColors.black,
+          behavior: SnackBarBehavior.floating,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+      );
+      return;
+    }
+    // TODO: wire to API
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          "Message sent! We'll get back to you soon. 🌱",
+          style: GoogleFonts.manrope(),
+        ),
+        backgroundColor: AppColors.black,
+        behavior: SnackBarBehavior.floating,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Name + Contact row
+        Row(
+          children: [
+            Expanded(
+              child: _SolterraField(
+                controller: _nameCtrl,
+                label: "Full Name",
+                hint: "Your name",
+                prefixIcon: Icons.person_outline_rounded,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _SolterraField(
+                controller: _contactCtrl,
+                label: "Phone / Email",
+                hint: "+91 XXXXX XXXXX",
+                prefixIcon: Icons.phone_outlined,
+                keyboardType: TextInputType.phone,
+              ),
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 14),
+
+        // Message field
+        _SolterraField(
+          controller: _messageCtrl,
+          label: "Message for Us",
+          hint:
+              "Tell us about your soil, crop type, or bulk order needs — "
+              "we'll recommend the right organic solution for you.",
+          maxLines: 5,
+        ),
+
+        const SizedBox(height: 24),
+
+        ConnectWithUsButton(
+          label: "Send Message",
+          onTap: _submit,
+        ),
+      ],
+    );
+  }
+}
+
+// ── Solterra-styled form field ────────────────────────────────────────────────
+
+class _SolterraField extends StatefulWidget {
+  final TextEditingController controller;
+  final String label;
+  final String hint;
+  final int maxLines;
+  final TextInputType keyboardType;
+  final IconData? prefixIcon;
+
+  const _SolterraField({
+    required this.controller,
+    required this.label,
+    required this.hint,
+    this.maxLines = 1,
+    this.keyboardType = TextInputType.text,
+    this.prefixIcon,
+  });
+
+  @override
+  State<_SolterraField> createState() => _SolterraFieldState();
+}
+
+class _SolterraFieldState extends State<_SolterraField> {
+  bool _focused = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final isMultiline = widget.maxLines > 1;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Animated label
+        AnimatedDefaultTextStyle(
+          duration: const Duration(milliseconds: 180),
+          style: GoogleFonts.manrope(
+            fontSize: _focused ? 11.5 : 12,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.6,
+            color: _focused
+                ? AppColors.black
+                : const Color(0xff6c778c),
+          ),
+          child: Text(widget.label.toUpperCase()),
+        ),
+
+        const SizedBox(height: 7),
+
+        Focus(
+          onFocusChange: (v) => setState(() => _focused = v),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 180),
+            decoration: BoxDecoration(
+              color: _focused
+                  ? Colors.white
+                  : const Color(0xffe8e8e6),
+              borderRadius:
+                  BorderRadius.circular(isMultiline ? 18 : 99),
+              border: Border.all(
+                color: _focused
+                    ? AppColors.black.withOpacity(0.5)
+                    : Colors.transparent,
+                width: 1.5,
+              ),
+              boxShadow: _focused
+                  ? [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.06),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      )
+                    ]
+                  : [],
+            ),
+            child: TextField(
+              controller: widget.controller,
+              maxLines: widget.maxLines,
+              keyboardType: widget.keyboardType,
+              style: GoogleFonts.manrope(
+                fontSize: 14,
+                color: AppColors.black,
+                fontWeight: FontWeight.w500,
+              ),
+              decoration: InputDecoration(
+                hintText: widget.hint,
+                hintStyle: GoogleFonts.manrope(
+                  fontSize: 13,
+                  color: Colors.black38,
+                  height: 1.5,
+                  fontWeight: FontWeight.w400,
+                ),
+                prefixIcon: (!isMultiline && widget.prefixIcon != null)
+                    ? Icon(widget.prefixIcon,
+                        size: 18, color: Colors.black38)
+                    : null,
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: widget.prefixIcon != null && !isMultiline
+                      ? 4
+                      : 18,
+                  vertical: isMultiline ? 16 : 0,
+                ),
+                isDense: !isMultiline,
+                constraints: !isMultiline
+                    ? const BoxConstraints(minHeight: 52)
+                    : null,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ── Address + Contact (unchanged logic, refined spacing) ─────────────────────
+
 class _AddressArea extends StatelessWidget {
   const _AddressArea();
 
@@ -217,12 +498,12 @@ class _AddressArea extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: const [
         _LabelText("ADDRESS"),
-        const SizedBox(height: 18),
-        _BodyText("1901 Thornridge Cir.\nShiloh, Hawaii 81063"),
-        const SizedBox(height: 50),
-        const _SocialIconsRow(),
+        SizedBox(height: 16),
+        _BodyText("Nashik"),
+        SizedBox(height: 48),
+        _SocialIconsRow(),
       ],
     );
   }
@@ -233,16 +514,16 @@ class _ContactArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _LabelText("PHONE"),
-        const SizedBox(height: 18),
-        _BodyText("[303] 873-2983"),
-        const SizedBox(height: 36),
+        SizedBox(height: 16),
+        _BodyText("+91 7030813550"),
+        SizedBox(height: 40),
         _LabelText("EMAIL"),
-        const SizedBox(height: 18),
-        _BodyText("hallo.cultivo@gmail.com"),
+        SizedBox(height: 16),
+        _BodyText("solterravermicompost@gmail.com"),
       ],
     );
   }
@@ -253,33 +534,37 @@ class _SocialIconsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget social(IconData icon) {
-      return Flexible(
+    Widget icon(IconData data, VoidCallback onTap) {
+      return GestureDetector(
+        onTap: onTap,
         child: Container(
-          height: 40,
-          width: 40,
+          height: 42,
+          width: 42,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: Colors.black26),
+            color: Colors.white,
+            border: Border.all(color: Colors.black12),
           ),
-          child: Icon(icon, size: 18),
+          child: Icon(data, size: 17, color: AppColors.black),
         ),
       );
     }
 
     return Row(
       children: [
-        social(Bootstrap.facebook),
+        icon(Bootstrap.facebook, SocialLauncher.facebook),
         const SizedBox(width: 10),
-        social(Bootstrap.twitter_x),
+        icon(Bootstrap.twitter_x, SocialLauncher.twitter_x),
         const SizedBox(width: 10),
-        social(Bootstrap.instagram),
+        icon(Bootstrap.instagram, SocialLauncher.instagram),
         const SizedBox(width: 10),
-        social(Bootstrap.linkedin),
+        icon(Bootstrap.linkedin, SocialLauncher.linkedin),
       ],
     );
   }
 }
+
+// ── Bottom sections ───────────────────────────────────────────────────────────
 
 class _DesktopBottomSection extends StatelessWidget {
   const _DesktopBottomSection();
@@ -287,14 +572,38 @@ class _DesktopBottomSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
+      children: const [
         _BodyText("© Copyright 2025, All Rights Reserved"),
-        const Spacer(),
-        _BodyText("FAQ"),
-        const SizedBox(width: 28),
-        _BodyText("Term of Service"),
-        const SizedBox(width: 28),
-        _BodyText("Privacy Policy"),
+        Spacer(),
+        _FooterLink("FAQ"),
+        SizedBox(width: 28),
+        _FooterLink("Terms of Service"),
+        SizedBox(width: 28),
+        _FooterLink("Privacy Policy"),
+      ],
+    );
+  }
+}
+
+class _TabletBottomSection extends StatelessWidget {
+  const _TabletBottomSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: const [
+        _BodyText("© Copyright 2025, All Rights Reserved"),
+        SizedBox(height: 10),
+        Wrap(
+          spacing: 22,
+          runSpacing: 8,
+          children: [
+            _FooterLink("FAQ"),
+            _FooterLink("Terms of Service"),
+            _FooterLink("Privacy Policy"),
+          ],
+        ),
       ],
     );
   }
@@ -307,21 +616,24 @@ class _MobileBottomSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: const [
         _BodyText("© Copyright 2025, All Rights Reserved"),
-        const SizedBox(height: 18),
+        SizedBox(height: 14),
         Wrap(
           spacing: 20,
+          runSpacing: 6,
           children: [
-            _BodyText("FAQ"),
-            _BodyText("Term of Service"),
-            _BodyText("Privacy Policy"),
+            _FooterLink("FAQ"),
+            _FooterLink("Terms of Service"),
+            _FooterLink("Privacy Policy"),
           ],
         ),
       ],
     );
   }
 }
+
+// ── Typography helpers ────────────────────────────────────────────────────────
 
 class _LabelText extends StatelessWidget {
   final String text;
@@ -332,9 +644,10 @@ class _LabelText extends StatelessWidget {
     return Text(
       text,
       style: GoogleFonts.manrope(
-        fontSize: 15,
+        fontSize: 11,
         color: const Color(0xff6c778c),
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 1.2,
       ),
     );
   }
@@ -349,9 +662,27 @@ class _BodyText extends StatelessWidget {
     return Text(
       text,
       style: GoogleFonts.manrope(
-        fontSize: 13,
+        fontSize: 13.5,
         color: AppColors.black,
-        height: 1.4,
+        height: 1.5,
+      ),
+    );
+  }
+}
+
+class _FooterLink extends StatelessWidget {
+  final String text;
+  const _FooterLink(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: GoogleFonts.manrope(
+        fontSize: 13,
+        color: Colors.black54,
+        decoration: TextDecoration.underline,
+        decorationColor: Colors.black26,
       ),
     );
   }

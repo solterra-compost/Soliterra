@@ -5,14 +5,22 @@ import 'package:solterra/core/theme/app_colors.dart';
 class ConnectWithUsButton extends StatelessWidget {
   Color? bgColor;
   Color? fgColor;
-  ConnectWithUsButton({this.bgColor, this.fgColor, super.key});
+  String? label;
+  Function() onTap;
+  ConnectWithUsButton({
+    this.bgColor,
+    this.fgColor,
+    this.label,
+    required this.onTap,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       onPressed: () {},
       icon: const Icon(Icons.arrow_forward, size: 16),
-      label: const Text('Connect With Us'),
+      label: Text(label ?? 'Connect With Us'),
       style: ElevatedButton.styleFrom(
         backgroundColor: bgColor ?? AppColors.black,
         foregroundColor: fgColor ?? AppColors.scaffoldBackgroundColor,

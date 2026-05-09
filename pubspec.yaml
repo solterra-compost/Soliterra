@@ -18,6 +18,7 @@ dependencies:
   http: ^1.6.0
   icons_plus: ^5.0.0
   supabase_flutter: ^2.12.4
+  url_launcher: ^6.3.2
   visibility_detector: ^0.4.0+2
 
 dev_dependencies:
@@ -30,6 +31,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - .env
   # fonts:
   #   - family: Schyler
   #     fonts:

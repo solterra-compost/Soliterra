@@ -79,7 +79,7 @@ class HeroSection extends StatelessWidget {
               const SizedBox(height: 24),
 
               // CTA button
-              ConnectWithUsButton(),
+              ConnectWithUsButton(onTap: () {}),
             ],
           ),
         ),
