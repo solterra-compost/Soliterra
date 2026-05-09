@@ -5,8 +5,8 @@ import 'package:solterra/core/responsive/responsive_extension.dart';
 import 'package:solterra/core/theme/app_colors.dart';
 import 'package:solterra/widgets/helper_description.dart';
 
-class PremiumFeatureSection extends StatelessWidget {
-  const PremiumFeatureSection({super.key});
+class PremiumSection extends StatelessWidget {
+  const PremiumSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +19,9 @@ class PremiumFeatureSection extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           HelperDescription(
-            label: 'Our Vision',
+            label: 'What We Offer',
             text:
-                "We believe in sustainable farming and strive to reduce chemical dependency in agriculture. Our premium vermicompost is designed to nurture soil with organic carbon, ensuring long-term benefits for both farmers and the environment. \nJoin us in our mission to bring back organic farming and create a healthier future for our soil and food.",
+                "Solterra supplies pure, chemical-free worm fertilizer made from natural vermicompost. Each batch is prepared locally with earthworms and organic waste, helping soil recover naturally and support stronger plants from seed to harvest.",
           ),
           context.isMobile
               ? const _MobileFeatureLayout()
@@ -45,9 +45,9 @@ class _DesktopFeatureLayout extends StatelessWidget {
         Expanded(
           child: _FeatureCard(
             imageHeight: 430,
-            title: "Farming Precision",
+            title: "Pure Vermicompost",
             description:
-                "Our precision farming employs state-of-the-art technology to optimize every aspect of farm operations.",
+                "Made only from earthworms and organic waste, with zero synthetic chemicals.",
           ),
         ),
         SizedBox(width: 28),
@@ -55,9 +55,9 @@ class _DesktopFeatureLayout extends StatelessWidget {
         Expanded(
           child: _FeatureCard(
             imageHeight: 280,
-            title: "Crop Surveillance",
+            title: "Local Quality",
             description:
-                "Track your crops' health and growth in real-time with our innovative solutions.",
+                "Prepared in small batches for fresh, nutrient-rich fertilizer every time.",
           ),
         ),
         SizedBox(width: 28),
@@ -65,9 +65,9 @@ class _DesktopFeatureLayout extends StatelessWidget {
         Expanded(
           child: _FeatureCard(
             imageHeight: 430,
-            title: "Automated Farming",
+            title: "Bulk Supply",
             description:
-                "Enhance farm efficiency and productivity with our cutting-edge automation solutions.",
+                "Trusted worm fertilizer for farms, gardens, and plantations across the region.",
           ),
         ),
       ],
@@ -84,23 +84,23 @@ class _MobileFeatureLayout extends StatelessWidget {
       children: const [
         _FeatureCard(
           imageHeight: 260,
-          title: "Farming Precision",
+          title: "Pure Vermicompost",
           description:
-              "Our precision farming employs state-of-the-art technology to optimize every aspect of farm operations.",
+              "Made only from earthworms and organic waste, with zero synthetic chemicals.",
         ),
         SizedBox(height: 26),
         _FeatureCard(
           imageHeight: 260,
-          title: "Crop Surveillance",
+          title: "Local Quality",
           description:
-              "Track your crops' health and growth in real-time with our innovative solutions.",
+              "Prepared in small batches for fresh, nutrient-rich fertilizer every time.",
         ),
         SizedBox(height: 26),
         _FeatureCard(
           imageHeight: 260,
-          title: "Automated Farming",
+          title: "Bulk Supply",
           description:
-              "Enhance farm efficiency and productivity with our cutting-edge automation solutions.",
+              "Trusted worm fertilizer for farms, gardens, and plantations across the region.",
         ),
       ],
     );

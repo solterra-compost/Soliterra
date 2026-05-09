@@ -46,7 +46,7 @@ class ColaborateSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Collaborate And Learn\nFrom Industry Experts\nAnd Enthusiasts",
+                      "Genuine Worm Fertilizer\nFrom Our Farm\nTo Your Soil",
                       style: GoogleFonts.manrope(
                         fontSize: context.responsive(
                           mobile: 20.0,
@@ -80,7 +80,8 @@ class ColaborateSection extends StatelessWidget {
 
                         ConnectWithUsButton(
                           bgColor: AppColors.scaffoldBackgroundColor,
-                          fgColor: AppColors.black,onTap: (){},
+                          fgColor: AppColors.black,
+                          onTap: () {},
                         ),
                       ],
                     ),

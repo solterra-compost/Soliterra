@@ -5,7 +5,7 @@ class AppStrings {
 
   // App titles
   static const String appTitle =
-      "Regenerating the Earth with Nano-Biotechnology";
+      "Solterra Worm Fertilizer - Natural Vermicompost";
 
   // App Image String
   static const String imgThumbnel = "assets/images/intro.jpg";

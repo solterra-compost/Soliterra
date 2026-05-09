@@ -3,7 +3,7 @@ import 'package:solterra/features/landing/presentation/widgets/colaborate_sectio
 import 'package:solterra/features/landing/presentation/widgets/get_in_touch_section.dart';
 import 'package:solterra/features/landing/presentation/widgets/hero_section.dart';
 import 'package:solterra/features/landing/presentation/widgets/nav_bar.dart';
-import 'package:solterra/features/landing/presentation/widgets/premium_feature_section.dart';
+import 'package:solterra/features/landing/presentation/widgets/premium_section.dart';
 import 'package:solterra/features/landing/presentation/widgets/solution_section.dart';
 import 'package:solterra/features/landing/presentation/widgets/stats_section.dart';
 
@@ -23,7 +23,7 @@ class LandingPage extends StatelessWidget {
             // StatsSection(),
             SolutionsSection(),
             ColaborateSection(),
-            PremiumFeatureSection(),
+            PremiumSection(),
             GetInTouchSection(),
           ],
         ),

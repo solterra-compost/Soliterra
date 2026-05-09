@@ -50,7 +50,7 @@ class HeroSection extends StatelessWidget {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      'Top Notch Webinar Platform',
+                      'Pure Worm Fertilizer',
                       style: GoogleFonts.manrope(
                         fontSize: 12,
                         color: Colors.grey.shade700,
@@ -63,7 +63,7 @@ class HeroSection extends StatelessWidget {
 
               // ★ Headline — font size via context.responsive()
               Text(
-                'Regenerating The Earth\nWith Nano-Biotechnology',
+                'Trusted Worm Fertilizer\nFor Healthier Soil',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.manrope(
                   fontSize: context.responsive(

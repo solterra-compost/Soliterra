@@ -19,9 +19,9 @@ class SolutionsSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           HelperDescription(
-            label: 'Our Vision',
+            label: 'Our Commitment',
             text:
-                "We believe in sustainable farming and strive to reduce chemical dependency in agriculture. Our premium vermicompost is designed to nurture soil with organic carbon, ensuring long-term benefits for both farmers and the environment. \nJoin us in our mission to bring back organic farming and create a healthier future for our soil and food.",
+                "We focus only on worm fertilizer and vermicompost, so every order reflects our expertise. Our earthworm-based compost feeds soil naturally and provides reliable, honest nutrition without artificial additives.",
           ),
           const SizedBox(height: 32),
           ResponsiveLayout(

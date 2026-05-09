@@ -84,19 +84,32 @@ class _DesktopTopSection extends StatelessWidget {
         Expanded(
           flex: 4,
           child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 380),
-            switchInCurve: Curves.easeOut,
-            switchOutCurve: Curves.easeIn,
-            transitionBuilder: (child, animation) => FadeTransition(
-              opacity: animation,
-              child: SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(0.06, 0),
-                  end: Offset.zero,
-                ).animate(animation),
-                child: child,
-              ),
-            ),
+            duration: const Duration(milliseconds: 420),
+            switchInCurve: Curves.easeOutCubic,
+            switchOutCurve: Curves.easeInCubic,
+            transitionBuilder: (child, animation) {
+              final offsetAnimation =
+                  Tween<Offset>(
+                    begin: const Offset(0.06, 0),
+                    end: Offset.zero,
+                  ).animate(
+                    CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeOutCubic,
+                    ),
+                  );
+              return FadeTransition(
+                opacity: animation,
+                child: SizeTransition(
+                  sizeFactor: animation,
+                  axisAlignment: 0,
+                  child: SlideTransition(
+                    position: offsetAnimation,
+                    child: child,
+                  ),
+                ),
+              );
+            },
             child: showForm
                 ? _InlineContactForm(
                     key: const ValueKey('form'),
@@ -127,19 +140,29 @@ class _TabletTopSection extends StatelessWidget {
         _LeftArea(),
         const SizedBox(height: 48),
         AnimatedSwitcher(
-          duration: const Duration(milliseconds: 380),
-          switchInCurve: Curves.easeOut,
-          switchOutCurve: Curves.easeIn,
-          transitionBuilder: (child, animation) => FadeTransition(
-            opacity: animation,
-            child: SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(0, 0.06),
-                end: Offset.zero,
-              ).animate(animation),
-              child: child,
-            ),
-          ),
+          duration: const Duration(milliseconds: 420),
+          switchInCurve: Curves.easeOutCubic,
+          switchOutCurve: Curves.easeInCubic,
+          transitionBuilder: (child, animation) {
+            final offsetAnimation =
+                Tween<Offset>(
+                  begin: const Offset(0, 0.06),
+                  end: Offset.zero,
+                ).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeOutCubic,
+                  ),
+                );
+            return FadeTransition(
+              opacity: animation,
+              child: SizeTransition(
+                sizeFactor: animation,
+                axisAlignment: 0,
+                child: SlideTransition(position: offsetAnimation, child: child),
+              ),
+            );
+          },
           child: showForm
               ? _InlineContactForm(
                   key: const ValueKey('form'),
@@ -169,19 +192,29 @@ class _MobileTopSection extends StatelessWidget {
         _LeftArea(),
         const SizedBox(height: 36),
         AnimatedSwitcher(
-          duration: const Duration(milliseconds: 380),
-          switchInCurve: Curves.easeOut,
-          switchOutCurve: Curves.easeIn,
-          transitionBuilder: (child, animation) => FadeTransition(
-            opacity: animation,
-            child: SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(0, 0.06),
-                end: Offset.zero,
-              ).animate(animation),
-              child: child,
-            ),
-          ),
+          duration: const Duration(milliseconds: 420),
+          switchInCurve: Curves.easeOutCubic,
+          switchOutCurve: Curves.easeInCubic,
+          transitionBuilder: (child, animation) {
+            final offsetAnimation =
+                Tween<Offset>(
+                  begin: const Offset(0, 0.06),
+                  end: Offset.zero,
+                ).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeOutCubic,
+                  ),
+                );
+            return FadeTransition(
+              opacity: animation,
+              child: SizeTransition(
+                sizeFactor: animation,
+                axisAlignment: 0,
+                child: SlideTransition(position: offsetAnimation, child: child),
+              ),
+            );
+          },
           child: showForm
               ? _InlineContactForm(
                   key: const ValueKey('form'),
@@ -240,7 +273,7 @@ class _LeftArea extends StatelessWidget {
         const SizedBox(height: 12),
 
         Text(
-          "Have questions about our vermicompost products?\nWe'd love to hear from you.",
+          "Reach out for genuine worm fertilizer and soil guidance.\nWe deliver honest, 100% natural vermicompost for farms and home gardens.",
           style: GoogleFonts.manrope(
             fontSize: context.responsive(mobile: 14, desktop: 16),
             height: 1.65,
@@ -477,7 +510,13 @@ class _AddressArea extends StatelessWidget {
       children: [
         const _LabelText("ADDRESS"),
         const SizedBox(height: 16),
-        const _BodyText("Nashik"),
+        const _BodyText("Nashik, Maharashtra"),
+        const SizedBox(height: 10),
+
+        const SizedBox(height: 40),
+        const _LabelText("WORKING HOURS"),
+        const SizedBox(height: 16),
+        const _BodyText("Mon - Sat, 9:00 AM - 6:00 PM"),
         const SizedBox(height: 48),
         _SocialIconsRow(),
         const SizedBox(height: 24),
