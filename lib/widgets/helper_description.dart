@@ -23,7 +23,7 @@ class HelperDescription extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withOpacity(0.2),
             blurRadius: 18,
             offset: const Offset(0, 10),
           ),

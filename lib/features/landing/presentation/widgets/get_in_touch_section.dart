@@ -28,7 +28,16 @@ class _GetInTouchSectionState extends State<GetInTouchSection> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      color: const Color(0xfff5f5f3),
+      decoration: BoxDecoration(
+        color: const Color(0xfff5f5f3),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            offset: Offset.fromDirection(1),
+            blurRadius: 18,
+          ),
+        ],
+      ),
       padding: EdgeInsets.symmetric(
         horizontal: context.horizontalPadding,
         vertical: context.responsive(mobile: 48, tablet: 64, desktop: 80),

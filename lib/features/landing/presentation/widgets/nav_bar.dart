@@ -18,11 +18,12 @@ class _NavBarDesktop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: EdgeInsetsGeometry.symmetric(
         horizontal: context.horizontalPadding,
         vertical: 16,
       ),
+      
       child: Row(
         children: [
           _Logo(),
