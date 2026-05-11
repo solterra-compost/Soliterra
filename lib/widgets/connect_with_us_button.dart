@@ -18,7 +18,7 @@ class ConnectWithUsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-      onPressed: () {},
+      onPressed: onTap,
       icon: const Icon(Icons.arrow_forward, size: 16),
       label: Text(label ?? 'Connect With Us'),
       style: ElevatedButton.styleFrom(

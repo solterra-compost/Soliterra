@@ -1,21 +1,30 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:http/http.dart' as http;
 import 'package:solterra/core/errors/exceptions.dart';
 
 class ApiClient {
-  final String baseUrl;
+  final String _baseUrl;
+  final String _anonKey;
   String Function() tokenController;
   final http.Client _client;
-  ApiClient(this.baseUrl, {required this.tokenController, http.Client? client})
-    : _client = client ?? http.Client();
+  ApiClient(
+    String baseUrl, {
+    required String anonKey,
+    required this.tokenController,
+    http.Client? client,
+  }) : _baseUrl = baseUrl,
+       _anonKey = anonKey,
+       _client = client ?? http.Client();
 
   Map<String, String> _buildHeaders({bool requiresAuth = true}) {
     final headers = {
       "Accept": "application/json",
       "Content-Type": "application/json",
+      "Prefer": "return=representation",
+      if (_anonKey != null) "apiKey": _anonKey,
+      if (_anonKey != null) "Authorization": "Bearer $_anonKey",
     };
     if (requiresAuth) {
       final token = tokenController();
@@ -26,14 +35,15 @@ class ApiClient {
     return headers;
   }
 
-  Map<String, dynamic> _handleStatus(http.Response response) {
+  dynamic _handleStatus(http.Response response) {
     switch (response.statusCode) {
       case 200:
-        if (response.body.isEmpty) return {};
-        return jsonDecode(response.body) as Map<String, dynamic>;
       case 201:
         if (response.body.isEmpty) return {};
-        return jsonDecode(response.body) as Map<String, dynamic>;
+        final decoded = jsonDecode(response.body);
+        if (decoded is Map<String, dynamic>) return decoded;
+        if (decoded is List<dynamic>) return decoded;
+        return decoded;
       case 204:
         return {};
       case 400:
@@ -68,7 +78,7 @@ class ApiClient {
     Map<String, String>? queryParams,
   }) async {
     try {
-      final url = Uri.https(baseUrl, endpoint, queryParams);
+      final url = Uri.https(_baseUrl, endpoint, queryParams);
       final response = await _client
           .get(url, headers: _buildHeaders(requiresAuth: requiresAuth))
           .timeout(Duration(seconds: 15));
@@ -80,13 +90,16 @@ class ApiClient {
     }
   }
 
-  Future<Map<String, dynamic>> post(
+  Future<dynamic> post(
     String path, {
     bool requiresAuth = true,
     Map<String, dynamic>? body,
   }) async {
     try {
-      final url = Uri.https(baseUrl, path);
+      final url = Uri.https(_baseUrl, path);
+      print('API POST to: $url');
+      print('Headers: ${_buildHeaders(requiresAuth: requiresAuth)}');
+      print('Body: $body');
       final response = await _client
           .post(
             url,
@@ -94,6 +107,8 @@ class ApiClient {
             body: body != null ? jsonEncode(body) : null,
           )
           .timeout(Duration(seconds: 15));
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
       return _handleStatus(response);
     } on SocketException {
       throw const NetworkException();
@@ -108,7 +123,7 @@ class ApiClient {
     bool requiresAuth = true,
   }) async {
     try {
-      final url = Uri.https(baseUrl, path);
+      final url = Uri.https(_baseUrl, path);
       final response = await _client
           .patch(
             url,
@@ -129,7 +144,7 @@ class ApiClient {
     bool requiresAuth = true,
   }) async {
     try {
-      final url = Uri.https(baseUrl, path);
+      final url = Uri.https(_baseUrl, path);
       final response = await _client
           .delete(url, headers: _buildHeaders(requiresAuth: requiresAuth))
           .timeout(Duration(seconds: 15));
@@ -147,7 +162,7 @@ class ApiClient {
     bool requiresAuth = true,
   }) async {
     try {
-      final url = Uri.https(baseUrl, path, queryParams);
+      final url = Uri.https(_baseUrl, path, queryParams);
       final response = await _client
           .get(url, headers: _buildHeaders(requiresAuth: requiresAuth))
           .timeout(Duration(seconds: 15));

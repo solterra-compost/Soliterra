@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:solterra/core/responsive/responsive_extension.dart';
 import 'package:solterra/core/responsive/responsive_layout.dart';
 import 'package:solterra/core/theme/app_colors.dart';
+import 'package:solterra/features/landing/domain/entities/enquiry_entity.dart';
+import 'package:solterra/features/landing/presentation/bloc/enquiry_event.dart';
+import 'package:solterra/features/landing/presentation/bloc/enquiry_state.dart';
+import 'package:solterra/features/landing/presentation/bloc/enquiry_submit_bloc.dart';
 import 'package:solterra/widgets/connect_with_us_button.dart';
 import 'package:solterra/widgets/social_launcher.dart';
 
@@ -44,17 +49,13 @@ class _GetInTouchSectionState extends State<GetInTouchSection> {
               onToggle: _toggleForm,
             ),
           ),
-
           SizedBox(
             height: context.responsive(mobile: 36, tablet: 44, desktop: 56),
           ),
-
           const Divider(color: Colors.black12, thickness: 1),
-
           SizedBox(
             height: context.responsive(mobile: 20, tablet: 22, desktop: 24),
           ),
-
           ResponsiveLayout(
             mobile: const _MobileBottomSection(),
             tablet: const _TabletBottomSection(),
@@ -79,7 +80,7 @@ class _DesktopTopSection extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(flex: 5, child: _LeftArea()),
+        const Expanded(flex: 5, child: _LeftArea()),
         const SizedBox(width: 80),
         Expanded(
           flex: 4,
@@ -137,7 +138,7 @@ class _TabletTopSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _LeftArea(),
+        const _LeftArea(),
         const SizedBox(height: 48),
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 420),
@@ -189,7 +190,7 @@ class _MobileTopSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _LeftArea(),
+        const _LeftArea(),
         const SizedBox(height: 36),
         AnimatedSwitcher(
           duration: const Duration(milliseconds: 420),
@@ -230,7 +231,7 @@ class _MobileTopSection extends StatelessWidget {
   }
 }
 
-// ── Left area (heading only — no subscribe strip) ─────────────────────────────
+// ── Left area ─────────────────────────────────────────────────────────────────
 
 class _LeftArea extends StatelessWidget {
   const _LeftArea({super.key});
@@ -240,7 +241,6 @@ class _LeftArea extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Eyebrow label
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
           decoration: BoxDecoration(
@@ -257,9 +257,7 @@ class _LeftArea extends StatelessWidget {
             ),
           ),
         ),
-
         const SizedBox(height: 16),
-
         Text(
           "Get In Touch!",
           style: GoogleFonts.manrope(
@@ -269,9 +267,7 @@ class _LeftArea extends StatelessWidget {
             height: 1.1,
           ),
         ),
-
         const SizedBox(height: 12),
-
         Text(
           "Reach out for genuine worm fertilizer and soil guidance.\nWe deliver honest, 100% natural vermicompost for farms and home gardens.",
           style: GoogleFonts.manrope(
@@ -285,11 +281,10 @@ class _LeftArea extends StatelessWidget {
   }
 }
 
-// ── Info panel — desktop (Address + Contact + social + CTA) ──────────────────
+// ── Info panels ───────────────────────────────────────────────────────────────
 
 class _InfoPanel extends StatelessWidget {
   final VoidCallback onContactTap;
-
   const _InfoPanel({super.key, required this.onContactTap});
 
   @override
@@ -299,16 +294,14 @@ class _InfoPanel extends StatelessWidget {
       children: [
         Flexible(flex: 1, child: _AddressArea(onContactTap: onContactTap)),
         const SizedBox(width: 40),
-        Flexible(flex: 1, child: const _ContactArea()),
+        const Flexible(flex: 1, child: _ContactArea()),
       ],
     );
   }
 }
-// ── Info panel — tablet ───────────────────────────────────────────────────────
 
 class _InfoPanelTablet extends StatelessWidget {
   final VoidCallback onContactTap;
-
   const _InfoPanelTablet({super.key, required this.onContactTap});
 
   @override
@@ -318,16 +311,14 @@ class _InfoPanelTablet extends StatelessWidget {
       children: [
         Flexible(flex: 1, child: _AddressArea(onContactTap: onContactTap)),
         const SizedBox(width: 32),
-        Flexible(flex: 1, child: const _ContactArea()),
+        const Flexible(flex: 1, child: _ContactArea()),
       ],
     );
   }
 }
-// ── Info panel — mobile ───────────────────────────────────────────────────────
 
 class _InfoPanelMobile extends StatelessWidget {
   final VoidCallback onContactTap;
-
   const _InfoPanelMobile({super.key, required this.onContactTap});
 
   @override
@@ -343,11 +334,10 @@ class _InfoPanelMobile extends StatelessWidget {
   }
 }
 
-// ── Inline contact form (replaces info panel) ─────────────────────────────────
+// ── Inline contact form — BLOC WIRED ─────────────────────────────────────────
 
 class _InlineContactForm extends StatefulWidget {
   final VoidCallback onBack;
-
   const _InlineContactForm({super.key, required this.onBack});
 
   @override
@@ -368,130 +358,178 @@ class _InlineContactFormState extends State<_InlineContactForm> {
   }
 
   void _submit() {
+    // Validate
     if (_nameCtrl.text.trim().isEmpty ||
         _contactCtrl.text.trim().isEmpty ||
         _messageCtrl.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Please fill in all fields.',
-            style: GoogleFonts.manrope(),
-          ),
-          backgroundColor: AppColors.black,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-      );
+      _showSnackbar('Please fill in all fields.');
       return;
     }
+
+    // Dispatch event to bloc
+    context.read<EnquiryBloc>().add(
+      FormDetailRequested(
+        enquiry: EnquiryEntity(
+          name: _nameCtrl.text.trim(),
+          phoneNo: _contactCtrl.text.trim(),
+          description: _messageCtrl.text.trim(),
+          // id: '3500',
+          timeStamp: DateTime.now().toString(),
+        ),
+      ),
+    );
+  }
+
+  void _showSnackbar(String message, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          "Message sent! We'll get back to you soon. 🌱",
-          style: GoogleFonts.manrope(),
-        ),
-        backgroundColor: AppColors.black,
+        content: Text(message, style: GoogleFonts.manrope()),
+        backgroundColor: isError ? Colors.red.shade700 : AppColors.black,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
-    widget.onBack();
+  }
+
+  void _clearForm() {
+    _nameCtrl.clear();
+    _contactCtrl.clear();
+    _messageCtrl.clear();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Back button
-        GestureDetector(
-          onTap: widget.onBack,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
+    return BlocListener<EnquiryBloc, EnquiryState>(
+      listener: (context, state) {
+        if (state is SubmitSuccessState) {
+          _showSnackbar("Message sent! We'll get back to you soon. 🌱");
+          _clearForm();
+          widget.onBack();
+        } else if (state is SubmitNetworkErrorState) {
+          _showSnackbar(state.message, isError: true);
+        } else if (state is SubmitErrorState) {
+          _showSnackbar(state.message, isError: true);
+        }
+      },
+      child: BlocBuilder<EnquiryBloc, EnquiryState>(
+        builder: (context, state) {
+          final isLoading = state is SubmitLoadingState;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(
-                Icons.arrow_back_rounded,
-                size: 16,
-                color: Color(0xff6c778c),
-              ),
-              const SizedBox(width: 6),
-              Text(
-                "Back to info",
-                style: GoogleFonts.manrope(
-                  fontSize: 12,
-                  color: const Color(0xff6c778c),
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 0.4,
+              // Back button
+              GestureDetector(
+                onTap: isLoading ? null : widget.onBack,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.arrow_back_rounded,
+                      size: 16,
+                      color: Color(0xff6c778c),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      "Back to info",
+                      style: GoogleFonts.manrope(
+                        fontSize: 12,
+                        color: const Color(0xff6c778c),
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.4,
+                      ),
+                    ),
+                  ],
                 ),
               ),
+
+              const SizedBox(height: 20),
+
+              Text(
+                "Send us a message",
+                style: GoogleFonts.manrope(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.black,
+                ),
+              ),
+
+              const SizedBox(height: 6),
+
+              Text(
+                "We typically respond within 24 hours.",
+                style: GoogleFonts.manrope(
+                  fontSize: 13,
+                  color: Colors.black45,
+                  height: 1.5,
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: _SolterraField(
+                      controller: _nameCtrl,
+                      label: "Full Name",
+                      hint: "Your name",
+                      prefixIcon: Icons.person_outline_rounded,
+                      enabled: !isLoading,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _SolterraField(
+                      controller: _contactCtrl,
+                      label: "Phone / Email",
+                      hint: "+91 XXXXX XXXXX",
+                      prefixIcon: Icons.phone_outlined,
+                      keyboardType: TextInputType.phone,
+                      enabled: !isLoading,
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 14),
+
+              _SolterraField(
+                controller: _messageCtrl,
+                label: "Message for Us",
+                hint:
+                    "Tell us about your soil, crop type, or bulk order needs — "
+                    "we'll recommend the right organic solution for you.",
+                maxLines: 5,
+                enabled: !isLoading,
+              ),
+
+              const SizedBox(height: 24),
+
+              // Submit button with loading state
+              isLoading
+                  ? Container(
+                      height: 52,
+                      decoration: BoxDecoration(
+                        color: AppColors.black.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(99),
+                      ),
+                      child: const Center(
+                        child: SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        ),
+                      ),
+                    )
+                  : ConnectWithUsButton(label: "Send Message", onTap: _submit),
             ],
-          ),
-        ),
-
-        const SizedBox(height: 20),
-
-        Text(
-          "Send us a message",
-          style: GoogleFonts.manrope(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-            color: AppColors.black,
-          ),
-        ),
-
-        const SizedBox(height: 6),
-
-        Text(
-          "We typically respond within 24 hours.",
-          style: GoogleFonts.manrope(
-            fontSize: 13,
-            color: Colors.black45,
-            height: 1.5,
-          ),
-        ),
-
-        const SizedBox(height: 24),
-
-        Row(
-          children: [
-            Expanded(
-              child: _SolterraField(
-                controller: _nameCtrl,
-                label: "Full Name",
-                hint: "Your name",
-                prefixIcon: Icons.person_outline_rounded,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _SolterraField(
-                controller: _contactCtrl,
-                label: "Phone / Email",
-                hint: "+91 XXXXX XXXXX",
-                prefixIcon: Icons.phone_outlined,
-                keyboardType: TextInputType.phone,
-              ),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 14),
-
-        _SolterraField(
-          controller: _messageCtrl,
-          label: "Message for Us",
-          hint:
-              "Tell us about your soil, crop type, or bulk order needs — "
-              "we'll recommend the right organic solution for you.",
-          maxLines: 5,
-        ),
-
-        const SizedBox(height: 24),
-
-        ConnectWithUsButton(label: "Send Message", onTap: _submit),
-      ],
+          );
+        },
+      ),
     );
   }
 }
@@ -500,7 +538,6 @@ class _InlineContactFormState extends State<_InlineContactForm> {
 
 class _AddressArea extends StatelessWidget {
   final VoidCallback onContactTap;
-
   const _AddressArea({super.key, required this.onContactTap});
 
   @override
@@ -511,14 +548,12 @@ class _AddressArea extends StatelessWidget {
         const _LabelText("ADDRESS"),
         const SizedBox(height: 16),
         const _BodyText("Nashik, Maharashtra"),
-        const SizedBox(height: 10),
-
         const SizedBox(height: 40),
         const _LabelText("WORKING HOURS"),
         const SizedBox(height: 16),
         const _BodyText("Mon - Sat, 9:00 AM - 6:00 PM"),
         const SizedBox(height: 48),
-        _SocialIconsRow(),
+        const _SocialIconsRow(),
         const SizedBox(height: 24),
         _ContactUsButton(onTap: onContactTap),
       ],
@@ -530,7 +565,6 @@ class _AddressArea extends StatelessWidget {
 
 class _ContactUsButton extends StatefulWidget {
   final VoidCallback onTap;
-
   const _ContactUsButton({required this.onTap});
 
   @override
@@ -641,7 +675,6 @@ class _SocialIconsRow extends StatelessWidget {
       );
     }
 
-    // Wrap instead of Row — prevents overflow if column is very narrow
     return Wrap(
       spacing: 10,
       runSpacing: 10,
@@ -654,6 +687,7 @@ class _SocialIconsRow extends StatelessWidget {
     );
   }
 }
+
 // ── Solterra-styled form field ────────────────────────────────────────────────
 
 class _SolterraField extends StatefulWidget {
@@ -663,6 +697,7 @@ class _SolterraField extends StatefulWidget {
   final int maxLines;
   final TextInputType keyboardType;
   final IconData? prefixIcon;
+  final bool enabled; // ← added
 
   const _SolterraField({
     required this.controller,
@@ -671,6 +706,7 @@ class _SolterraField extends StatefulWidget {
     this.maxLines = 1,
     this.keyboardType = TextInputType.text,
     this.prefixIcon,
+    this.enabled = true,
   });
 
   @override
@@ -697,15 +733,17 @@ class _SolterraFieldState extends State<_SolterraField> {
           ),
           child: Text(widget.label.toUpperCase()),
         ),
-
         const SizedBox(height: 7),
-
         Focus(
           onFocusChange: (v) => setState(() => _focused = v),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 180),
             decoration: BoxDecoration(
-              color: _focused ? Colors.white : const Color(0xffe8e8e6),
+              color: !widget.enabled
+                  ? const Color(0xffd8d8d6) // dimmed when loading
+                  : _focused
+                  ? Colors.white
+                  : const Color(0xffe8e8e6),
               borderRadius: BorderRadius.circular(isMultiline ? 18 : 99),
               border: Border.all(
                 color: _focused
@@ -727,6 +765,7 @@ class _SolterraFieldState extends State<_SolterraField> {
               controller: widget.controller,
               maxLines: widget.maxLines,
               keyboardType: widget.keyboardType,
+              enabled: widget.enabled,
               style: GoogleFonts.manrope(
                 fontSize: 14,
                 color: AppColors.black,
@@ -770,8 +809,8 @@ class _DesktopBottomSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: const [
+    return const Row(
+      children: [
         _BodyText("© Copyright 2025, All Rights Reserved"),
         Spacer(),
         _FooterLink("FAQ"),
@@ -789,9 +828,9 @@ class _TabletBottomSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
+      children: [
         _BodyText("© Copyright 2025, All Rights Reserved"),
         SizedBox(height: 10),
         Wrap(
@@ -813,9 +852,9 @@ class _MobileBottomSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
+      children: [
         _BodyText("© Copyright 2025, All Rights Reserved"),
         SizedBox(height: 14),
         Wrap(
